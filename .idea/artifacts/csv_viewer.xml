@@ -1,0 +1,22 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="csv-viewer">
+    <output-path>$PROJECT_DIR$/out/artifacts/csv_viewer</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="ph.kana.csvv.CsvViewerJavaFx" />
+        <option name="description" value="Another CSV viewer with TDI" />
+        <option name="height" value="650" />
+        <option name="htmlParamFile" value="" />
+        <option name="paramFile" value="" />
+        <option name="title" value="CSV Viewer" />
+        <option name="vendor" value="@_kana0011" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="csv-viewer.jar">
+        <element id="module-output" name="csv-viewer" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/commons-csv-1.4.jar" />
+      </element>
+    </root>
+  </artifact>
+</component>
