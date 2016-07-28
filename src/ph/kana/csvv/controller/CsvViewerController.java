@@ -11,12 +11,16 @@ import ph.kana.csvv.util.CsvFileUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CsvViewerController {
 
 	@FXML private AnchorPane rootPane;
 	@FXML private TabPane csvTableTabPane;
+
+	private final Map<File, Tab> ACTIVE_CSV_FILES = new HashMap();
 
 	@FXML
 	public void openCsvMenuClick() {
@@ -44,14 +48,21 @@ public class CsvViewerController {
 	}
 
 	private void openCsvTab(File csvFile) {
-		List<Tab> tabs = csvTableTabPane.getTabs();
-		Tab tab = createCsvTab(csvFile);
+		Tab tab;
+		if (ACTIVE_CSV_FILES.containsKey(csvFile)) {
+			tab = ACTIVE_CSV_FILES.get(csvFile);
+		} else {
+			tab = createCsvTab(csvFile);
 
-		if (tab != null) {
-			tabs.add(tab);
-			csvTableTabPane.getSelectionModel()
-				.select(tab);
+			if (tab != null) {
+				csvTableTabPane.getTabs()
+					.add(tab);
+				ACTIVE_CSV_FILES.put(csvFile, tab);
+				tab.setOnClosed(event -> ACTIVE_CSV_FILES.remove(csvFile));
+			}
 		}
+		csvTableTabPane.getSelectionModel()
+			.select(tab);
 	}
 
 	private Tab createCsvTab(File csvFile) {
