@@ -57,15 +57,15 @@ public class CsvViewerController {
 		tab.setText(csvFile.getName());
 
 		AnchorPane tabContentAnchorPane = new AnchorPane();
-		ScrollPane csvTableScrollPane = new ScrollPane();
-		tabContentAnchorPane.getChildren().add(csvTableScrollPane);
-		AnchorPane.setTopAnchor(csvTableScrollPane, 0.0);
-		AnchorPane.setRightAnchor(csvTableScrollPane, 0.0);
-		AnchorPane.setBottomAnchor(csvTableScrollPane, 0.0);
-		AnchorPane.setLeftAnchor(csvTableScrollPane, 0.0);
+		TableView csvTable = createCsvTable(csvFile);
+
+		tabContentAnchorPane.getChildren().add(csvTable);
+		AnchorPane.setTopAnchor(csvTable, 0.0);
+		AnchorPane.setRightAnchor(csvTable, 0.0);
+		AnchorPane.setBottomAnchor(csvTable, 0.0);
+		AnchorPane.setLeftAnchor(csvTable, 0.0);
 		tab.setContent(tabContentAnchorPane);
 
-		csvTableScrollPane.setContent(createCsvTable(csvFile));
 		return tab;
 	}
 
@@ -76,7 +76,7 @@ public class CsvViewerController {
 
 		List headers = csvTable.getColumns();
 		data.getHeaders().stream()
-			.map(TableColumn<List<String>, String>::new)
+			.map(TableColumn::new)
 			.peek(this::setupCellColumn)
 			.forEach(headers::add);
 		List tableItems = csvTable.getItems();
