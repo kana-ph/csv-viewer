@@ -10,8 +10,8 @@ import ph.kana.csvv.model.CsvData;
 import ph.kana.csvv.util.CsvFileUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class CsvViewerController {
 
@@ -31,10 +31,10 @@ public class CsvViewerController {
 	private FileChooser createFileChooser() {
 		FileChooser fileChooser = new FileChooser();
 		File userHome = new File(System.getProperty("user.home"));
-		FileChooser.ExtensionFilter csvExtensionFilter = new FileChooser.ExtensionFilter("CSV Files", "csv", "txt");
 
 		fileChooser.setInitialDirectory(userHome);
-		fileChooser.setSelectedExtensionFilter(csvExtensionFilter);
+		fileChooser.getExtensionFilters()
+			.add(new FileChooser.ExtensionFilter("CSV Files (*.csv)", "*.csv"));
 		fileChooser.setTitle("Open CSV File");
 		return fileChooser;
 	}
@@ -46,30 +46,37 @@ public class CsvViewerController {
 	private void openCsvTab(File csvFile) {
 		List<Tab> tabs = csvTableTabPane.getTabs();
 		Tab tab = createCsvTab(csvFile);
-		tabs.add(tab);
 
-		csvTableTabPane.getSelectionModel()
-			.select(tab);
+		if (tab != null) {
+			tabs.add(tab);
+			csvTableTabPane.getSelectionModel()
+				.select(tab);
+		}
 	}
 
 	private Tab createCsvTab(File csvFile) {
-		Tab tab = new Tab();
-		tab.setText(csvFile.getName());
+		try {
+			Tab tab = new Tab();
+			tab.setText(csvFile.getName());
 
-		AnchorPane tabContentAnchorPane = new AnchorPane();
-		TableView csvTable = createCsvTable(csvFile);
+			AnchorPane tabContentAnchorPane = new AnchorPane();
+			TableView csvTable = createCsvTable(csvFile);
 
-		tabContentAnchorPane.getChildren().add(csvTable);
-		AnchorPane.setTopAnchor(csvTable, 0.0);
-		AnchorPane.setRightAnchor(csvTable, 0.0);
-		AnchorPane.setBottomAnchor(csvTable, 0.0);
-		AnchorPane.setLeftAnchor(csvTable, 0.0);
-		tab.setContent(tabContentAnchorPane);
+			tabContentAnchorPane.getChildren().add(csvTable);
+			AnchorPane.setTopAnchor(csvTable, 0.0);
+			AnchorPane.setRightAnchor(csvTable, 0.0);
+			AnchorPane.setBottomAnchor(csvTable, 0.0);
+			AnchorPane.setLeftAnchor(csvTable, 0.0);
+			tab.setContent(tabContentAnchorPane);
 
-		return tab;
+			return tab;
+		} catch (IOException e) {
+			reportError(e);
+			return null;
+		}
 	}
 
-	private TableView createCsvTable(File csvFile) {
+	private TableView createCsvTable(File csvFile) throws IOException {
 		CsvData data = CsvFileUtil.readCsv(csvFile);
 
 		TableView csvTable = new TableView();
@@ -88,5 +95,13 @@ public class CsvViewerController {
 		MapValueFactory mapValueFactory = new MapValueFactory(column.getText());
 		column.setCellValueFactory(mapValueFactory);
 		column.setMinWidth(100.0);
+	}
+
+	private void reportError(Exception e) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("CSV Viewer Error!");
+		alert.setHeaderText(e.getClass().getSimpleName());
+		alert.setContentText("Failed to open file!\nCSV format might be broken.");
+		alert.showAndWait();
 	}
 }

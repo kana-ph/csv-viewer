@@ -16,7 +16,7 @@ public final class CsvFileUtil {
 
 	private CsvFileUtil() {}
 
-	public static CsvData readCsv(File csvFile) {
+	public static CsvData readCsv(File csvFile) throws IOException {
 		CSVFormat format = CSVFormat.DEFAULT
 			.withHeader()
 			.withIgnoreEmptyLines();
@@ -36,9 +36,6 @@ public final class CsvFileUtil {
 			data.setHeaders(headers);
 			data.setValues(records);
 			return data;
-		} catch (IOException e) {
-			e.printStackTrace(System.err);
 		}
-		return null;
 	}
 }
