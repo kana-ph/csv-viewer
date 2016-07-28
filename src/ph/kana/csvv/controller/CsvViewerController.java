@@ -1,5 +1,6 @@
 package ph.kana.csvv.controller;
 
+import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
@@ -9,10 +10,8 @@ import javafx.stage.Window;
 import ph.kana.csvv.model.CsvData;
 import ph.kana.csvv.util.CsvFileUtil;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,7 @@ public class CsvViewerController {
 	@FXML private AnchorPane rootPane;
 	@FXML private TabPane csvTableTabPane;
 
+	private Application application;
 	private final Map<File, Tab> ACTIVE_CSV_FILES = new HashMap();
 
 	@FXML
@@ -37,6 +37,10 @@ public class CsvViewerController {
 	@FXML
 	public void githubMenuClicked() {
 		openLink("https://github.com/kana0011/csv-viewer");
+	}
+
+	public void setApplication(Application application) {
+		this.application = application;
 	}
 
 	private FileChooser createFileChooser() {
@@ -115,13 +119,9 @@ public class CsvViewerController {
 		column.setMinWidth(100.0);
 	}
 
-	private void openLink(String link) {
-		try {
-			Desktop.getDesktop()
-				.browse(new URI(link));
-		} catch (Exception e) {
-			reportError(e);
-		}
+	private void openLink(String url) {
+		application.getHostServices()
+			.showDocument(url);
 	}
 
 	private void reportError(Exception e) {

@@ -2,9 +2,9 @@ package ph.kana.csvv;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ph.kana.csvv.controller.CsvViewerController;
 
 public class CsvViewerJavaFx extends Application {
 
@@ -13,8 +13,11 @@ public class CsvViewerJavaFx extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception{
-		Parent root = FXMLLoader.load(getClass().getResource("fxml/csv-viewer.fxml"));
-		Scene scene = new Scene(root, APP_WIDTH, APP_HEIGHT);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/csv-viewer.fxml"));
+		Scene scene = new Scene(loader.load(), APP_WIDTH, APP_HEIGHT);
+
+		CsvViewerController controller = loader.<CsvViewerController>getController();
+		controller.setApplication(this);
 
 		primaryStage.setTitle("kana0011/csv-viewer");
 		primaryStage.setMinWidth(APP_WIDTH);

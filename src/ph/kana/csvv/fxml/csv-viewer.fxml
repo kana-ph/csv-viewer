@@ -23,7 +23,7 @@
                         <MenuItem disable="true" mnemonicParsing="false" text="VERSION - 1.0" />
                         <MenuItem disable="true" mnemonicParsing="false" text="Created by @_kana0011" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                      <MenuItem fx:id="githubMenuClicked" mnemonicParsing="false" text="Source Code @ Github" />
+                      <MenuItem onAction="#githubMenuClicked" mnemonicParsing="false" text="Source Code @ Github" />
                     </items>
                   </Menu>
             </items>
