@@ -18,6 +18,7 @@ public class CsvViewerJavaFx extends Application {
 
 		CsvViewerController controller = loader.<CsvViewerController>getController();
 		controller.setApplication(this);
+		controller.openFileCliArgs(getParameters().getUnnamed());
 
 		primaryStage.setTitle("kana0011/csv-viewer");
 		primaryStage.setMinWidth(APP_WIDTH);

@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static javafx.scene.control.Alert.AlertType;
+
 public class CsvViewerController {
 
 	@FXML private AnchorPane rootPane;
@@ -41,6 +43,12 @@ public class CsvViewerController {
 
 	public void setApplication(Application application) {
 		this.application = application;
+	}
+
+	public void openFileCliArgs(List<String> args) {
+		args.stream()
+			.map(File::new)
+			.forEach(this::openCsvTab);
 	}
 
 	private FileChooser createFileChooser() {
@@ -125,7 +133,7 @@ public class CsvViewerController {
 	}
 
 	private void reportError(Exception e) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
+		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("CSV Viewer Error!");
 		alert.setHeaderText(e.getClass().getSimpleName());
 		alert.setContentText("Failed to open file!\nCSV format might be broken.");
