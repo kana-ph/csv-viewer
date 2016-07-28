@@ -9,8 +9,10 @@ import javafx.stage.Window;
 import ph.kana.csvv.model.CsvData;
 import ph.kana.csvv.util.CsvFileUtil;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,11 @@ public class CsvViewerController {
 		if (csvFile != null) {
 			openCsvTab(csvFile);
 		}
+	}
+
+	@FXML
+	public void githubMenuClicked() {
+		openLink("https://github.com/kana0011/csv-viewer");
 	}
 
 	private FileChooser createFileChooser() {
@@ -106,6 +113,15 @@ public class CsvViewerController {
 		MapValueFactory mapValueFactory = new MapValueFactory(column.getText());
 		column.setCellValueFactory(mapValueFactory);
 		column.setMinWidth(100.0);
+	}
+
+	private void openLink(String link) {
+		try {
+			Desktop.getDesktop()
+				.browse(new URI(link));
+		} catch (Exception e) {
+			reportError(e);
+		}
 	}
 
 	private void reportError(Exception e) {
