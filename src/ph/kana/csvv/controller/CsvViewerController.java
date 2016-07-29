@@ -1,12 +1,16 @@
 package ph.kana.csvv.controller;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import ph.kana.csvv.model.CsvData;
 import ph.kana.csvv.util.CsvFileUtil;
 
@@ -18,18 +22,16 @@ import java.util.Map;
 
 import static javafx.scene.control.Alert.AlertType;
 
-public class CsvViewerController {
+public class CsvViewerController extends AbstractController {
 
-	@FXML private AnchorPane rootPane;
 	@FXML private TabPane csvTableTabPane;
 
-	private Application application;
 	private final Map<File, Tab> ACTIVE_CSV_FILES = new HashMap();
 
 	@FXML
 	public void openCsvMenuClick() {
 		FileChooser fileChooser = createFileChooser();
-		File csvFile = fileChooser.showOpenDialog(fetchWindow());
+		File csvFile = fileChooser.showOpenDialog(window);
 
 		if (csvFile != null) {
 			openCsvTab(csvFile);
@@ -37,12 +39,31 @@ public class CsvViewerController {
 	}
 
 	@FXML
-	public void githubMenuClicked() {
-		openLink("https://github.com/kana0011/csv-viewer");
-	}
+	public void openAboutDialog() {
+		String fxmlLocation = "../fxml/about-dialog.fxml";
 
-	public void setApplication(Application application) {
-		this.application = application;
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlLocation));
+			Scene scene = new Scene(loader.load());
+
+			Stage dialog = new Stage();
+			dialog.initStyle(StageStyle.UNIFIED);
+			dialog.initModality(Modality.APPLICATION_MODAL);
+
+			dialog.initOwner(window);
+			dialog.setTitle("About CSV Viewer");
+			dialog.setScene(scene);
+			dialog.sizeToScene();
+			dialog.setResizable(false);
+
+			AboutDialogController aboutController = loader.getController();
+			aboutController.setWindow(dialog);
+			aboutController.setApplication(application);
+
+			dialog.show();
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
+		}
 	}
 
 	public void openFileCliArgs(List<String> args) {
@@ -60,10 +81,6 @@ public class CsvViewerController {
 			.add(new FileChooser.ExtensionFilter("CSV Files (*.csv)", "*.csv"));
 		fileChooser.setTitle("Open CSV File");
 		return fileChooser;
-	}
-
-	private Window fetchWindow() {
-		return rootPane.getScene().getWindow();
 	}
 
 	private void openCsvTab(File csvFile) {
@@ -125,11 +142,6 @@ public class CsvViewerController {
 		MapValueFactory mapValueFactory = new MapValueFactory(column.getText());
 		column.setCellValueFactory(mapValueFactory);
 		column.setMinWidth(100.0);
-	}
-
-	private void openLink(String url) {
-		application.getHostServices()
-			.showDocument(url);
 	}
 
 	private void reportError(Exception e) {

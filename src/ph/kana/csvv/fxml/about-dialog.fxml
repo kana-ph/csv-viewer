@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="rootPane" minHeight="230.0" minWidth="340.0" prefHeight="230.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.kana.csvv.controller.AboutDialogController">
+   <children>
+      <VBox layoutX="150.0" layoutY="50.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <Label fx:id="appNameLabel" text="" />
+            <Label fx:id="versionLabel" text="">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Created by @_kana0011">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Hyperlink onAction="#licenseLinkClicked" text="Apache License 2.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Hyperlink>
+            <Hyperlink onAction="#sourceCodeLinkClicked" text="Source Code" />
+         </children>
+      </VBox>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" layoutX="59.0" layoutY="116.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="180.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#closeButtonClicked" text="Close" />
+         </children>
+      </FlowPane>
+   </children>
+</AnchorPane>

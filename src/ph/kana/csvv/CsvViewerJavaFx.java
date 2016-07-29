@@ -16,12 +16,14 @@ public class CsvViewerJavaFx extends Application {
 	private static final double APP_HEIGHT = 650.0;
 
 	@Override
-	public void start(Stage primaryStage) throws Exception{
+	public void start(Stage primaryStage) throws Exception {
+		setUserAgentStylesheet(STYLESHEET_MODENA);
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/csv-viewer.fxml"));
 		Scene scene = new Scene(loader.load(), APP_WIDTH, APP_HEIGHT);
 
 		CsvViewerController controller = loader.<CsvViewerController>getController();
 		controller.setApplication(this);
+		controller.setWindow(primaryStage);
 		controller.openFileCliArgs(getParameters().getUnnamed());
 
 		primaryStage.setTitle("kana0011/csv-viewer");
@@ -32,7 +34,7 @@ public class CsvViewerJavaFx extends Application {
 	}
 
 	public static void main(String[] args) {
-		if ("--version".equals(args[0])) {
+		if (args.length == 1 && "--version".equals(args[0])) {
 			System.out.println(APP_NAME);
 			System.out.print(VERSION);
 		} else {

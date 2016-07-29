@@ -3,30 +3,22 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="rootPane" minHeight="650.0" minWidth="600.0" prefHeight="650.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.kana.csvv.controller.CsvViewerController">
+<AnchorPane minHeight="650.0" minWidth="600.0" prefHeight="650.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.kana.csvv.controller.CsvViewerController">
    <children>
       <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#openCsvMenuClick" text="Open CSV File" />
+              <MenuItem mnemonicParsing="false" onAction="#openCsvMenuClick" text="Open CSV File" accelerator="Shortcut+O" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-                  <Menu mnemonicParsing="false" text="About">
-                    <items>
-                        <MenuItem disable="true" mnemonicParsing="false" text="VERSION - 1.0" />
-                        <MenuItem disable="true" mnemonicParsing="false" text="Created by @_kana0011" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                      <MenuItem onAction="#githubMenuClicked" mnemonicParsing="false" text="Source Code @ Github" />
-                    </items>
-                  </Menu>
-            </items>
+          <Menu mnemonicParsing="false" text="Help" accelerator="F1">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#openAboutDialog" text="About" accelerator="F1" />
+               </items>
           </Menu>
         </menus>
       </MenuBar>
