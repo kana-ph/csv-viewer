@@ -36,7 +36,8 @@ public class CsvViewerJavaFx extends Application {
 	public static void main(String[] args) {
 		if (args.length == 1 && "--version".equals(args[0])) {
 			System.out.println(APP_NAME);
-			System.out.print(VERSION);
+			System.out.println(VERSION);
+			System.exit(0);
 		} else {
 			launch(args);
 		}
