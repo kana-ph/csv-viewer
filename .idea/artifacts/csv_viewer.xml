@@ -15,7 +15,6 @@
     <root id="root">
       <element id="archive" name="csv-viewer.jar">
         <element id="module-output" name="csv-viewer" />
-        <element id="file-copy" path="$PROJECT_DIR$/lib/commons-csv-1.4.jar" />
       </element>
     </root>
   </artifact>

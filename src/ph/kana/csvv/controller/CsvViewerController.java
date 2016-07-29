@@ -40,7 +40,7 @@ public class CsvViewerController extends AbstractController {
 
 	@FXML
 	public void openAboutDialog() {
-		String fxmlLocation = "../fxml/about-dialog.fxml";
+		String fxmlLocation = "/ph/kana/csvv/fxml/about-dialog.fxml";
 
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlLocation));
