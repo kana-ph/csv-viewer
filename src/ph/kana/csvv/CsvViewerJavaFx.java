@@ -6,6 +6,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ph.kana.csvv.controller.CsvViewerController;
 
+import static ph.kana.csvv.util.Constants.APP_NAME;
+import static ph.kana.csvv.util.Constants.VERSION;
+
+
 public class CsvViewerJavaFx extends Application {
 
 	private static final double APP_WIDTH = 600.0;
@@ -28,6 +32,11 @@ public class CsvViewerJavaFx extends Application {
 	}
 
 	public static void main(String[] args) {
-		launch(args);
+		if ("--version".equals(args[0])) {
+			System.out.println(APP_NAME);
+			System.out.print(VERSION);
+		} else {
+			launch(args);
+		}
 	}
 }
