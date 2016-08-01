@@ -2,7 +2,6 @@ package ph.kana.csvv.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
@@ -31,10 +30,11 @@ public class CsvViewerController extends AbstractController {
 	@FXML
 	public void openCsvMenuClick() {
 		FileChooser fileChooser = createFileChooser();
-		File csvFile = fileChooser.showOpenDialog(window);
+		List<File> csvFiles = fileChooser.showOpenMultipleDialog(window);
 
-		if (csvFile != null) {
-			openCsvTab(csvFile);
+		if (csvFiles != null) {
+			csvFiles.stream()
+				.forEach(this::openCsvTab);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class CsvViewerController extends AbstractController {
 
 			return tab;
 		} catch (IOException e) {
-			reportError(e);
+			reportIOException(e, csvFile);
 			return null;
 		}
 	}
@@ -144,11 +144,13 @@ public class CsvViewerController extends AbstractController {
 		column.setMinWidth(100.0);
 	}
 
-	private void reportError(Exception e) {
+	private void reportIOException(IOException e, File f) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("CSV Viewer Error!");
-		alert.setHeaderText(e.getClass().getSimpleName());
-		alert.setContentText("Failed to open file!\nCSV format might be broken.");
+		alert.setHeaderText("Failed to Open File!");
+		alert.setContentText(String.format("Failed to open file: %s\nFile might be corrupted or not a valid CSV.", f.getName()));
+
+		e.printStackTrace(System.err);
 		alert.showAndWait();
 	}
 }
