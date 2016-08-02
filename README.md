@@ -15,10 +15,10 @@ Another CSV viewer with TDI
 
 ### Open Files
 ```bash
-csv-viewer [csv-files...]
+java -jar csv-viewer.jar [csv-files...]
 ```
 
 ### Version
 ```bash
-csv-viewer --version
+java -jar csv-viewer.jar --version
 ```
