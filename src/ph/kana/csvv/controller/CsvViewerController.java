@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -23,9 +26,15 @@ import static javafx.scene.control.Alert.AlertType;
 
 public class CsvViewerController extends AbstractController {
 
+	@FXML private AnchorPane rootPane;
 	@FXML private TabPane csvTableTabPane;
 
 	private final Map<File, Tab> ACTIVE_CSV_FILES = new HashMap();
+
+	public void initialize() {
+		rootPane.setOnDragOver(this::handleRootPaneDragOver);
+		rootPane.setOnDragDropped(this::handleRootPaneDragDropped);
+	}
 
 	@FXML
 	public void openCsvMenuClick() {
@@ -152,5 +161,25 @@ public class CsvViewerController extends AbstractController {
 
 		e.printStackTrace(System.err);
 		alert.showAndWait();
+	}
+
+	private void handleRootPaneDragOver(DragEvent event) {
+		boolean dragFromOutside = event.getGestureSource() == null;
+		boolean draggingFiles = dragFromOutside && event.getDragboard().hasFiles();
+		if (dragFromOutside && draggingFiles) {
+			event.acceptTransferModes(TransferMode.ANY);
+		}
+		event.consume();
+	}
+
+	private void handleRootPaneDragDropped(DragEvent event) {
+		Dragboard dragboard = event.getDragboard();
+		if (dragboard.hasFiles()) {
+			dragboard.getFiles()
+				.stream()
+				.forEach(this::openCsvTab);
+		}
+		event.setDropCompleted(true);
+		event.consume();
 	}
 }
