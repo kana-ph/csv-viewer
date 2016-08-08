@@ -9,6 +9,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -117,12 +118,20 @@ public class CsvViewerController extends AbstractController {
 
 			AnchorPane tabContentAnchorPane = new AnchorPane();
 			TableView csvTable = createCsvTable(csvFile);
+			TextField filenameTextField = createTextField(csvFile);
 
 			tabContentAnchorPane.getChildren().add(csvTable);
+			tabContentAnchorPane.getChildren().add(filenameTextField);
+
 			AnchorPane.setTopAnchor(csvTable, 0.0);
 			AnchorPane.setRightAnchor(csvTable, 0.0);
-			AnchorPane.setBottomAnchor(csvTable, 0.0);
+			AnchorPane.setBottomAnchor(csvTable, 30.0);
 			AnchorPane.setLeftAnchor(csvTable, 0.0);
+
+			AnchorPane.setRightAnchor(filenameTextField, 0.0);
+			AnchorPane.setBottomAnchor(filenameTextField, 0.0);
+			AnchorPane.setLeftAnchor(filenameTextField, 0.0);
+
 			tab.setContent(tabContentAnchorPane);
 
 			return tab;
@@ -130,6 +139,14 @@ public class CsvViewerController extends AbstractController {
 			reportIOException(e, csvFile);
 			return null;
 		}
+	}
+
+	private TextField createTextField(File csvFile) {
+		TextField textField = new TextField();
+		textField.setText(csvFile.getAbsolutePath());
+		textField.setEditable(false);
+		textField.setFocusTraversable(false);
+		return textField;
 	}
 
 	private TableView createCsvTable(File csvFile) throws IOException {
