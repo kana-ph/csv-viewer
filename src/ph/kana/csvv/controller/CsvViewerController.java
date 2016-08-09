@@ -9,13 +9,13 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ph.kana.csvv.model.CsvData;
 import ph.kana.csvv.util.CsvFileUtil;
+import sun.plugin.javascript.navig.Anchor;
 
 import java.io.File;
 import java.io.IOException;
@@ -118,19 +118,19 @@ public class CsvViewerController extends AbstractController {
 
 			AnchorPane tabContentAnchorPane = new AnchorPane();
 			TableView csvTable = createCsvTable(csvFile);
-			TextField filenameTextField = createTextField(csvFile);
+			AnchorPane bottomControl = createBottomControl(csvFile);
 
-			tabContentAnchorPane.getChildren().add(csvTable);
-			tabContentAnchorPane.getChildren().add(filenameTextField);
+			tabContentAnchorPane.getChildren()
+				.addAll(csvTable, bottomControl);
 
 			AnchorPane.setTopAnchor(csvTable, 0.0);
 			AnchorPane.setRightAnchor(csvTable, 0.0);
 			AnchorPane.setBottomAnchor(csvTable, 30.0);
 			AnchorPane.setLeftAnchor(csvTable, 0.0);
 
-			AnchorPane.setRightAnchor(filenameTextField, 0.0);
-			AnchorPane.setBottomAnchor(filenameTextField, 0.0);
-			AnchorPane.setLeftAnchor(filenameTextField, 0.0);
+			AnchorPane.setRightAnchor(bottomControl, 2.0);
+			AnchorPane.setBottomAnchor(bottomControl, 2.0);
+			AnchorPane.setLeftAnchor(bottomControl, 2.0);
 
 			tab.setContent(tabContentAnchorPane);
 
@@ -141,12 +141,36 @@ public class CsvViewerController extends AbstractController {
 		}
 	}
 
-	private TextField createTextField(File csvFile) {
-		TextField textField = new TextField();
-		textField.setText(csvFile.getAbsolutePath());
-		textField.setEditable(false);
-		textField.setFocusTraversable(false);
-		return textField;
+	private AnchorPane createBottomControl(File csvFile) {
+		AnchorPane bottomControl = new AnchorPane();
+		Label fileLabel = new Label("Location");
+		fileLabel.setPrefWidth(60.0);
+
+		TextField filenameTextField = new TextField();
+		filenameTextField.setDisable(true);
+		filenameTextField.setText(csvFile.getAbsolutePath());
+
+		Button editSaveButton = new Button("Edit CSV");
+		editSaveButton.setOnAction(null); //TODO add edit logic
+		editSaveButton.setPrefWidth(80.0);
+
+		bottomControl.getChildren()
+			.addAll(fileLabel, filenameTextField, editSaveButton);
+
+		AnchorPane.setTopAnchor(fileLabel, 1.0);
+		AnchorPane.setBottomAnchor(fileLabel, 1.0);
+		AnchorPane.setLeftAnchor(fileLabel, 1.0);
+
+		AnchorPane.setTopAnchor(filenameTextField, 1.0);
+		AnchorPane.setRightAnchor(filenameTextField, 85.0);
+		AnchorPane.setBottomAnchor(filenameTextField, 1.0);
+		AnchorPane.setLeftAnchor(filenameTextField, 65.0);
+
+		AnchorPane.setTopAnchor(editSaveButton, 1.0);
+		AnchorPane.setRightAnchor(editSaveButton, 1.0);
+		AnchorPane.setBottomAnchor(editSaveButton, 1.0);
+
+		return bottomControl;
 	}
 
 	private TableView createCsvTable(File csvFile) throws IOException {
