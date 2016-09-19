@@ -15,13 +15,13 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ph.kana.csvv.model.CsvData;
 import ph.kana.csvv.util.CsvFileUtil;
-import sun.plugin.javascript.navig.Anchor;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static javafx.scene.control.Alert.AlertType;
 
@@ -94,24 +94,22 @@ public class CsvViewerController extends AbstractController {
 	}
 
 	private void openCsvTab(File csvFile) {
-		Tab tab;
+		Optional<Tab> tab;
 		if (ACTIVE_CSV_FILES.containsKey(csvFile)) {
-			tab = ACTIVE_CSV_FILES.get(csvFile);
+			tab = Optional.of(ACTIVE_CSV_FILES.get(csvFile));
 		} else {
 			tab = createCsvTab(csvFile);
-
-			if (tab != null) {
+			tab.ifPresent(t -> {
 				csvTableTabPane.getTabs()
-					.add(tab);
-				ACTIVE_CSV_FILES.put(csvFile, tab);
-				tab.setOnClosed(event -> ACTIVE_CSV_FILES.remove(csvFile));
-			}
+					.add(t);
+				ACTIVE_CSV_FILES.put(csvFile, t);
+				t.setOnClosed(event -> ACTIVE_CSV_FILES.remove(csvFile));
+			});
 		}
-		csvTableTabPane.getSelectionModel()
-			.select(tab);
+		tab.ifPresent(csvTableTabPane.getSelectionModel()::select);
 	}
 
-	private Tab createCsvTab(File csvFile) {
+	private Optional<Tab> createCsvTab(File csvFile) {
 		try {
 			Tab tab = new Tab();
 			tab.setText(csvFile.getName());
@@ -134,10 +132,10 @@ public class CsvViewerController extends AbstractController {
 
 			tab.setContent(tabContentAnchorPane);
 
-			return tab;
+			return Optional.of(tab);
 		} catch (IOException e) {
 			reportIOException(e, csvFile);
-			return null;
+			return Optional.empty();
 		}
 	}
 
