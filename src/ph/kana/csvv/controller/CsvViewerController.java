@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ph.kana.csvv.model.CsvData;
 import ph.kana.csvv.util.CsvFileUtil;
+import ph.kana.csvv.util.DndHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,8 +34,9 @@ public class CsvViewerController extends AbstractController {
 	private final Map<File, Tab> ACTIVE_CSV_FILES = new HashMap();
 
 	public void initialize() {
-		rootPane.setOnDragOver(this::handleRootPaneDragOver);
-		rootPane.setOnDragDropped(this::handleRootPaneDragDropped);
+		DndHandler dndHandler = DndHandler.getInstance(this::openCsvTab);
+		rootPane.setOnDragOver(dndHandler::handleRootPaneDragOver);
+		rootPane.setOnDragDropped(dndHandler::handleRootPaneDragDropped);
 	}
 
 	@FXML
@@ -200,25 +202,5 @@ public class CsvViewerController extends AbstractController {
 
 		e.printStackTrace(System.err);
 		alert.showAndWait();
-	}
-
-	private void handleRootPaneDragOver(DragEvent event) {
-		boolean dragFromOutside = event.getGestureSource() == null;
-		boolean draggingFiles = dragFromOutside && event.getDragboard().hasFiles();
-		if (dragFromOutside && draggingFiles) {
-			event.acceptTransferModes(TransferMode.ANY);
-		}
-		event.consume();
-	}
-
-	private void handleRootPaneDragDropped(DragEvent event) {
-		Dragboard dragboard = event.getDragboard();
-		if (dragboard.hasFiles()) {
-			dragboard.getFiles()
-				.stream()
-				.forEach(this::openCsvTab);
-		}
-		event.setDropCompleted(true);
-		event.consume();
 	}
 }
